@@ -1,0 +1,140 @@
+sudo apt update && sudo apt upgrade -y
+
+# create a new user
+sudo adduser pool
+sudo usermod -aG sudo pool
+
+
+# check firewall status
+sudo ufw status
+
+su - pool
+sudo apt install wget unzip git postgresql screen nginx -y
+
+# pigeon coin
+wget https://github.com/Pigeoncoin/pigeoncoin/releases/download/v1.19.2.0/pigeon-ubuntu20-1.19.2.0.tar.gz
+
+tar zxvf pigeon-ubuntu20-1.19.2.0.tar.gz
+cd pigeon-build
+
+sudo mv pigeon-cli /usr/local/bin/
+sudo mv pigeond /usr/local/bin/
+
+run daemon to create the .pigeoncore folder
+pigeond
+Ctrl+C or Ctrl+Z
+
+cd .pigeoncore
+nano pigeon.conf
+rpcuser=
+rpcpassword=
+Ctrl+X, Y, Enter
+
+cat pigeon.conf
+
+sudo nano /etc/systemd/system/pgn.service
+```
+[Unit]
+Description=Pigeoncoin Service
+After=network.target
+
+[Service]
+Type=forking
+User=pool
+Group=pool
+WorkingDirectory=/home/pool/.pigeoncore/
+ExecStart=/usr/local/bin/pigeond -daemon
+ExecStop=/usr/local/bin/pigeon-cli stop
+Restart=always
+PtivateTemp=true
+TimeoutStopSec=60s
+TimeoutStartSec=10s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo systemctl enable pgn.service
+sudo systemctl start pgn.service
+
+# Check the status of the daemon
+tail -f /home/pool/.pigeoncore/debug.log
+
+cd /home/pool/
+# used for checkout out .sln files with CRLF line endings
+git config --global core.autocrlf input
+git clone https://github.com/Kudaraidee/miningcore-xiaolin1579
+OR
+git clone git@github.com:Kudaraidee/miningcore-xiaolin1579.git --config core.autocrlf=false
+git clone git@github.com:Kudaraidee/miningcore-xiaolin1579.git --config core.autocrlf=input
+# commit fro mthe video
+mv miningcore-xiaolin1579 miningcore
+cd miningcore
+git checkout 70ad9abf9b31b15f29ddeff3e8a4678a7d044387
+# create new branch so that the build get extrat a version number
+git checkout -b superFOMO-yt
+# chmod +x ./build-ubuntu-20.04.sh
+./build-ubuntu-20.04.sh
+
+# start db
+sudo systemctl start postgresql@12-main
+
+# run psql as postgres user
+sudo -u postgres psql
+
+# Exexute
+CREATE ROLE miningcore WITH LOGIN ENCRYPTED PASSWORD 'PASS_HERE';
+CREATE DATABASE miningcore OWNER miningcore;
+\q
+
+cd /home/pool/
+
+# create the database schema
+sudo -u postgres psql -d miningcore -f miningcore/src/Miningcore/Persistence/Postgres/Scripts/createdb.sql
+
+nano pool.json
+paste content of pigeoncoin_pool.json
+
+# generate an address
+pigeon-cli getnewaddress
+
+
+update the pool.json with the address
+    pools -> 0 -> address
+    pools -> 0 -> rewardsRecipients -> address
+
+# create miningcore service
+sudo nano /etc/systemd/system/miningcore.service
+
+```
+[Unit]
+Description=Miningcore Backend Service
+After=network.target
+
+[Service]
+Type=forking
+User=pool
+Group=pool
+WorkingDirectory=/home/pool
+ExecStart=/usr/bin/screen -dmS miningcore /home/pool/miningcore/build/Miningcore -c /home/pool/pool.json
+ExecStop=/usr/bin/screen -XS miningcore quit
+Restart=always
+PtivateTemp=true
+TimeoutStopSec=60s
+TimeoutStartSec=10s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+sudo systemctl daemon-reload
+sudo systemctl enable miningcore.service
+sudo systemctl start miningcore.service
+
+# check the status
+screen -r miningcore
