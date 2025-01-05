@@ -1586,6 +1586,45 @@
         "explorerTxLink": "https://explorer.isotopec.org/tx/{0}",
         "explorerAccountLink": "https://explorer.isotopec.org/address/{0}"
     },
+    "junkcoin": {
+        "name": "Junkcoin",
+        "canonicalName": "Junkcoin",
+        "symbol": "JKC",
+        "family": "bitcoin",
+        "website": "",
+        "market": "",
+        "twitter": "",
+        "telegram": "",
+        "discord": "",
+        "coinbaseHasher": {
+            "hash": "sha256d"
+        },
+        "headerHasher": {
+            "hash": "scrypt",
+            "args": [1024, 1]
+        },
+        "blockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "sha256d"
+                }
+            ]
+        },
+        "posBlockHasher": {
+            "hash": "reverse",
+            "args": [
+                {
+                    "hash": "scrypt",
+                    "args": [1024, 1]
+                }
+            ]
+        },
+        "shareMultiplier": 65536,
+        "explorerBlockLink": "https://chainz.cryptoid.info/lky/block.dws?$height$.htm",
+        "explorerTxLink": "https://chainz.cryptoid.info/lky/tx.dws?{0}.htm",
+        "explorerAccountLink": "https://chainz.cryptoid.info/ltc/address.dws?{0}.htm"
+    },
     "kylacoin": {
         "name": "Kylacoin",
         "symbol": "KCN",
