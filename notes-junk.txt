@@ -121,7 +121,8 @@ cd /home/pool/
 sudo -u postgres psql -d miningcore -f miningcore/src/Miningcore/Persistence/Postgres/Scripts/createdb.sql
 
 nano pool.json
-paste content of pigeoncoin_junk.json
+# paste content of junk_pool.json
+# difficulty https://www.nicehash.com/pool-operators
 
 # generate an address
 pigeon-cli getnewaddress
@@ -166,3 +167,36 @@ screen -r miningcore
 # add junkcoin to the coins.json
 nano miningcore/src/Miningcore/coins.json
 
+# rebuild
+./build-ubuntu-20.04.sh
+
+# allow stratum port in firewall
+sudo ufw allow 4600/tcp
+
+# allow API port in firewall (optional only to submit the pool in miningpoolstats and for WebUI)
+sudo ufw allow 5000/tcp
+
+# get my address
+curl ifconfig.me
+
+# open browser to http://IP_FROM_ABOVE:5000/api/pools
+
+# check port is open
+telnet IP_FROM_ABOVE 4601
+
+
+# web ui
+git clone https://github.com/btclinux/Miningcore.WebUI.git
+
+# update the WebUI URL
+nano Miningcore.WebUI/js/miningcore.js
+# var WebURL         = "https://45.32.157.88:5000" || window.location.protocol + "//" + window.location.hostname + "/";  // Website URL is:  https://domain.com/
+
+# NGINX
+sudo nano /etc/nginx/sites-enabled/default
+# update "root /var/www/html;" to "root /home/pool/Miningcore.WebUI;""
+
+sudo systemctl restart nginx.service
+
+# allow port 80 in firewall
+sudo ufw allow 80/tcp
