@@ -91,9 +91,9 @@
           "4600": {
             "name": "gpu",
             "listenAddress": "*",
-            "difficulty": 1,
+            "difficulty": 500000,
             "varDiff": {
-              "minDiff": 0.1,
+              "minDiff": 500000,
               "maxDiff": null,
               "targetTime": 15,
               "retargetTime": 90,
