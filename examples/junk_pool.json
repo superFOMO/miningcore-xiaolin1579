@@ -117,6 +117,57 @@
             "factor": 0.5
           }
         }
+      },
+      {
+        "id": "xbt1",
+        "enabled": true,
+        "coin": "bitcoin-classic",
+        "address": "xxx",
+        "rewardRecipients": [
+          {
+            "type": "op",
+            "address": "xxx",
+            "percentage": 1
+          }
+        ],
+        "blockRefreshInterval": 120,
+        "clientConnectionTimeout": 600,
+        "banning": {
+          "enabled": true,
+          "time": 600,
+          "invalidPercent": 50,
+          "checkThreshold": 50
+        },
+        "ports": {
+          "4600": {
+            "name": "gpu",
+            "listenAddress": "*",
+            "difficulty": 500000,
+            "varDiff": {
+              "minDiff": 500000,
+              "maxDiff": null,
+              "targetTime": 15,
+              "retargetTime": 90,
+              "variancePercent": 30
+            }
+          }
+        },
+        "daemons": [
+          {
+            "host": "127.0.0.1",
+            "port": 9222,
+            "user": "user",
+            "password": "password"
+          }
+        ],
+        "paymentProcessing": {
+          "enabled": true,
+          "minimumPayment": 10000,
+          "payoutScheme": "PPLNS",
+          "payoutSchemeConfig": {
+            "factor": 0.5
+          }
+        }
       }
     ]
   }
