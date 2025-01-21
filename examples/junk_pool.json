@@ -5,14 +5,14 @@
       "enableConsoleColors": true,
       "logFile": "",
       "apiLogFile": "",
-      "logBaseDirectory": "",
+    "logBaseDirectory": "/home/pool/miningcore-logs",
       "perPoolLogFile": true
     },
     "banning": {
       "manager": "Integrated",
       "banOnJunkReceive": true,
       "banOnInvalidShares": true,
-      "banOnLoginFailure": true
+    "banOnLoginFailure": true
     },
     "notifications": {
       "enabled": false,

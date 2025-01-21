@@ -1,3 +1,12 @@
+# https://youtu.be/Ns45-OuHc_k?si=9FYFTEdFaYR2V7ej
+
+Have an own pool
+-   QT/Node installed on a Windows VPS
+    expose ports
+Connect from Linux VPS to Windows VPS
+
+Pool difficulty >=500000
+
 # Check ports
 sudo ss -tuln
 
@@ -20,11 +29,11 @@ wget https://github.com/Junkcoin-Foundation/junkcoin-core/releases/download/v3.0
 tar -xvf junkcoin-v.3.0.0.0-linux-x64-release.tar.xz -C junkcoin-build
 cd junkcoin-build
 
-sudo mv pigeon-cli /usr/local/bin/
-sudo mv pigeond /usr/local/bin/
+sudo mv junkcoin-cli /usr/local/bin/
+sudo mv junkcoind /usr/local/bin/
 
-run daemon to create the .pigeoncore folder
-pigeond
+# run daemon to create the .junkcoincore folder
+junkcoind
 Ctrl+C or Ctrl+Z
 
 cd .junkcoin
@@ -125,7 +134,7 @@ nano pool.json
 # difficulty https://www.nicehash.com/pool-operators
 
 # generate an address
-pigeon-cli getnewaddress
+junkcoin-cli getnewaddress
 
 update the pool.json with the address
     pools -> 0 -> address
